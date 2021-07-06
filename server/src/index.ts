@@ -21,7 +21,10 @@ declare global {
 app.use(setUser);
 // users
 app.use(createUserRoute);
+if (require.main === module) {
+  app.listen(5000, () => {
+    console.log("listening on port 5000");
+  });
+}
 
-app.listen(5000, () => {
-  console.log("listening on port 5000");
-});
+export { app };

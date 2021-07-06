@@ -1,6 +1,7 @@
 import pool from "../db";
 
 const getOrganizationByUserId = async (userId: string) => {
+  console.log(userId);
   const queryResponse = await pool.query(
     `SELECT *
       FROM get_organization_by_user_id(

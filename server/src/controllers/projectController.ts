@@ -11,7 +11,7 @@ const _getProjectsFromQueryResponse = (queryResponse: any) => {
   }
   return projects;
 };
-const getProjectById = async (projectId: string) => {
+const getProjectById = async (projectId: string | null | undefined) => {
   if (!projectId) return null;
   try {
     const queryResponse = await pool.query(
