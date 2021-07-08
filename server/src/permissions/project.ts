@@ -1,6 +1,6 @@
 import { IOrganization } from "../contracts/organization";
 import { IProject } from "../contracts/project";
-import { IUser } from "../contracts/user";
+import { IUserInfo } from "../contracts/user";
 import { getOrganizationByUserId } from "../controllers/organizationController";
 import {
   getProjectsByOrganizationId,
@@ -9,7 +9,7 @@ import {
 import { Roles } from "../utils/roleEnum";
 
 const canAccessProject = async (
-  user: IUser | null | undefined,
+  user: IUserInfo | null | undefined,
   project: IProject | null | undefined
 ) => {
   if (
@@ -26,7 +26,7 @@ const canAccessProject = async (
     const organization: IOrganization | null | undefined =
       await getOrganizationByUserId(user.userId);
     const projects = await getProjectsByOrganizationId(
-      organization?.id.toString() as string
+      organization?.organizationId.toString() as string
     );
     return projects?.some((p) => p.projectId === projectId);
   }

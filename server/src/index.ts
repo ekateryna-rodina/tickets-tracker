@@ -2,13 +2,13 @@ import createConnectionPool, { ConnectionPool, sql } from "@databases/pg";
 import dotenv from "dotenv";
 import { app } from "./app";
 import { IProject } from "./contracts/project";
-import { IUser } from "./contracts/user";
+import { IUserInfo } from "./contracts/user";
 
 let db: ConnectionPool;
 declare global {
   namespace Express {
     interface Request {
-      currentUser?: IUser;
+      currentUser?: IUserInfo;
       project: IProject;
     }
   }
@@ -19,7 +19,7 @@ const start = async () => {
     throw new Error("DATABASE_URL must be defined");
   }
   const { DATABASE_URL } = process.env;
-  console.log(DATABASE_URL);
+
   try {
     // create db connection pool
     db = createConnectionPool({
@@ -35,10 +35,12 @@ const start = async () => {
   } catch (error) {
     throw new Error("Cannot connect to  the database");
   }
-
-  app.listen(5000, () => {
-    console.log("listening on port 5000");
-  });
+  // https://stackoverflow.com/questions/54422849/jest-testing-multiple-test-file-port-3000-already-in-use
+  if (process.env.NODE_ENV !== "test") {
+    app.listen(5000, () => {
+      console.log("listening on port 5000");
+    });
+  }
   process.on("SIGINT", function () {
     console.log("\nGracefully shutting down from SIGINT (Ctrl-C)");
     process.exit();

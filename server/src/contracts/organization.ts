@@ -1,5 +1,12 @@
+export interface IOrganizationInput {
+  name: string;
+  email: string;
+  createdAt: string;
+  logo?: string;
+}
+
 export interface IOrganization {
-  id: number;
+  organizationId: number;
   name: string;
   email: string;
   createdAt: string;

@@ -1,10 +1,10 @@
 import { IOrganization } from "../../contracts/organization";
 import { IProject } from "../../contracts/project";
-import { IUser } from "../../contracts/user";
+import { IUserInfo } from "../../contracts/user";
 import { Roles } from "../../utils/roleEnum";
 import { canAccessProject } from "../project";
 
-let user: IUser = {
+let user: IUserInfo = {
   userId: "1",
   email: "email",
   role: Roles.Organization,
@@ -14,7 +14,7 @@ let project: IProject = {
   name: "project",
 };
 let organization: IOrganization = {
-  id: 1,
+  organizationId: 1,
   name: "org",
   email: "email",
   createdAt: "",
