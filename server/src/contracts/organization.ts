@@ -5,7 +5,7 @@ export interface IOrganizationInput {
   logo?: string;
 }
 
-export interface IOrganization {
+export interface IOrganizationInfo {
   organizationId: number;
   name: string;
   email: string;

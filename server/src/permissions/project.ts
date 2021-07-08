@@ -1,4 +1,4 @@
-import { IOrganization } from "../contracts/organization";
+import { IOrganizationInfo } from "../contracts/organization";
 import { IProject } from "../contracts/project";
 import { IUserInfo } from "../contracts/user";
 import { getOrganizationByUserId } from "../controllers/organizationController";
@@ -23,7 +23,7 @@ const canAccessProject = async (
   const { projectId } = project;
   // if role is organization and project belongs to organization
   if (user.role === Roles.Organization) {
-    const organization: IOrganization | null | undefined =
+    const organization: IOrganizationInfo | null | undefined =
       await getOrganizationByUserId(user.userId);
     const projects = await getProjectsByOrganizationId(
       organization?.organizationId.toString() as string

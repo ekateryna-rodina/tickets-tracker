@@ -1,4 +1,4 @@
-import { IOrganization } from "../../contracts/organization";
+import { IOrganizationInfo } from "../../contracts/organization";
 import { IProject } from "../../contracts/project";
 import { IUserInfo } from "../../contracts/user";
 import { Roles } from "../../utils/roleEnum";
@@ -13,7 +13,7 @@ let project: IProject = {
   projectId: "1",
   name: "project",
 };
-let organization: IOrganization = {
+let organization: IOrganizationInfo = {
   organizationId: 1,
   name: "org",
   email: "email",
