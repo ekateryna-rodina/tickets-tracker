@@ -1,5 +1,5 @@
+import { db, sql } from "..";
 import { IProject } from "../contracts/project";
-import pool from "../db";
 
 const _getProjectsFromQueryResponse = (queryResponse: any) => {
   let projects: IProject[] = [];
@@ -14,13 +14,10 @@ const _getProjectsFromQueryResponse = (queryResponse: any) => {
 const getProjectById = async (projectId: string | null | undefined) => {
   if (!projectId) return null;
   try {
-    const queryResponse = await pool.query(
-      `SELECT *
+    const queryResponse = await db.query(sql`SELECT *
                     FROM get_project_by_id(
-                            $1::integer
-                        );`,
-      [Number(projectId)]
-    );
+                            ${Number(projectId)}::integer
+                        );`);
 
     return _getProjectsFromQueryResponse(queryResponse)[0] || null;
   } catch (error) {
@@ -29,13 +26,10 @@ const getProjectById = async (projectId: string | null | undefined) => {
 };
 const getProjectsByOrganizationId = async (organizationId: string) => {
   try {
-    const queryResponse = await pool.query(
-      `SELECT *
+    const queryResponse = await db.query(sql`SELECT *
               FROM get_projects_by_organization_id(
-                      $1::integer
-                  );`,
-      [Number(organizationId)]
-    );
+                      ${Number(organizationId)}::integer
+                  );`);
 
     return _getProjectsFromQueryResponse(queryResponse);
   } catch (error) {
@@ -45,13 +39,10 @@ const getProjectsByOrganizationId = async (organizationId: string) => {
 
 const getProjectsByUserId = async (userId: string) => {
   try {
-    const queryResponse = await pool.query(
-      `SELECT *
+    const queryResponse = await db.query(sql`SELECT *
                   FROM get_projects_by_user_id(
-                          $1::integer
-                      );`,
-      [Number(userId)]
-    );
+                          ${Number(userId)}::integer
+                      );`);
     return _getProjectsFromQueryResponse(queryResponse);
   } catch (error) {
     console.log(error);

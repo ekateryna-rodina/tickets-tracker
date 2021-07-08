@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS organization(
     organization_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) CONSTRAINT unq_org UNIQUE NOT NULL,
-    created_at timestamp without time zone default (now() at time zone 'utc'),
+    created_at timestamp without time zone,
     logo bytea
 );
 CREATE TABLE IF NOT EXISTS user_organization(
@@ -49,17 +49,6 @@ CREATE TABLE IF NOT EXISTS project_user(
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     project_id INTEGER REFERENCES project
-);
-CREATE TABLE IF NOT EXISTS ticket(
-    ticket_id SERIAL PRIMARY KEY,
-    title VARCHAR(50) NOT NULL,
-    story text NOT NULL,
-    ticket_type TicketTypes NOT NULL,
-    ticket_priority TicketPriority NOT NULL,
-    date_created timestamp without time zone default (now() at time zone 'utc'),
-    creator_id INTEGER REFERENCES users (user_id) NOT NULL,
-    estimated_time timestamp without time zone,
-    backlog_id INTEGER REFERENCES backlog (backlog_id) NOT NULL
 );
 CREATE OR REPLACE FUNCTION insert_user_with_role(
         email_ varchar(100),
@@ -109,7 +98,7 @@ CREATE OR REPLACE FUNCTION get_organization_by_user_id(id integer) RETURNS table
         organization_id int,
         name varchar,
         email varchar(100),
-        created_at timestamp without time zone default (now() at time zone 'utc'),
+        created_at timestamp without time zone,
         logo bytea
     ) AS $$ BEGIN RETURN QUERY
 select organization.organization_id,

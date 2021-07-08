@@ -1,6 +1,6 @@
 import request from "supertest";
+import { app } from "../../app";
 import { createUser } from "../../controllers/userController";
-import { app } from "../../index";
 import { Roles } from "../../utils/roleEnum";
 
 jest.mock("../../controllers/userController", () => ({
