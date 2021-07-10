@@ -16,18 +16,18 @@ const createOrganization = async (
     let organizations = await db.query(sql`
     SELECT * from insert_organization(${nameInput}::varchar, 
                                       ${emailInput}::varchar, 
-                                      ${new Date().getTime()}::timestamp, 
                                       ${logoInput}::bytea)
     `);
     if (!organizations[0]) return null;
     const { organization_id, email, name, created_at, logo } = organizations[0];
-    return {
+    const response: IOrganizationInfo = {
       organizationId: organization_id,
       email,
       name,
       createdAt: created_at,
       logo,
     };
+    return response;
   } catch (error) {
     console.log(error);
     return null;

@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS user_organization(
 CREATE TABLE IF NOT EXISTS project(
     project_id SERIAL PRIMARY KEY,
     name VARCHAR(100),
-    organization_id INTEGER REFERENCES organization,
+    organization_id INTEGER REFERENCES organization ON DELETE CASCADE,
     created_at timestamp without time zone
 );
 ALTER TABLE ONLY project
@@ -141,10 +141,12 @@ END;
 $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION get_project_by_id(id_ integer) RETURNS table(
         project_id int,
-        name varchar
+        name varchar,
+        organization_id int,
+        created_at timestamp without time zone
     ) AS $$ BEGIN RETURN QUERY
 select *
 from project
-where project_id = $1;
+where project.project_id = $1;
 END;
 $$ LANGUAGE plpgsql;

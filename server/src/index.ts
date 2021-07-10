@@ -1,7 +1,7 @@
 import createConnectionPool, { ConnectionPool, sql } from "@databases/pg";
 import dotenv from "dotenv";
 import { app } from "./app";
-import { IProject } from "./contracts/project";
+import { IProjectInfo } from "./contracts/project";
 import { IUserInfo } from "./contracts/user";
 
 let db: ConnectionPool;
@@ -9,7 +9,7 @@ declare global {
   namespace Express {
     interface Request {
       currentUser?: IUserInfo;
-      project: IProject;
+      project: IProjectInfo;
     }
   }
 }

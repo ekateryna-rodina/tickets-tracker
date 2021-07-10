@@ -1,7 +1,6 @@
 export interface IOrganizationInput {
   name: string;
   email: string;
-  createdAt: string;
   logo?: string;
 }
 

@@ -1,5 +1,5 @@
 import { IOrganizationInfo } from "../contracts/organization";
-import { IProject } from "../contracts/project";
+import { IProjectInfo } from "../contracts/project";
 import { IUserInfo } from "../contracts/user";
 import { getOrganizationByUserId } from "../controllers/organizationController";
 import {
@@ -10,7 +10,7 @@ import { Roles } from "../utils/roleEnum";
 
 const canAccessProject = async (
   user: IUserInfo | null | undefined,
-  project: IProject | null | undefined
+  project: IProjectInfo | null | undefined
 ) => {
   if (
     !user ||
