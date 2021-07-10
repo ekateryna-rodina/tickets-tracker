@@ -1,54 +1,40 @@
-import { sql } from "@databases/pg";
-import { db } from "../..";
 import { IProjectInput } from "../../contracts/project";
+import {
+  clearOrganizations,
+  clearUsers,
+  createOrganizations,
+  createUsers,
+} from "../../utils/inMemoryDbHelpers";
+import { organizations, users } from "../../utils/mockTestData";
 import { createProject, getProjectById } from "../projectController";
+
 let organization1Id: number;
 let organization2Id: number;
 
+let user1Id: number;
+let user2Id: number;
+
+const initSchemaInMemoryDB = async () => {
+  let newOrganizations = await createOrganizations(organizations);
+  let newUsers = await createUsers(users);
+  organization1Id = newOrganizations[0].organizationId;
+  organization2Id = newOrganizations[1].organizationId;
+
+  user1Id = newUsers[0].userId;
+  user2Id = newUsers[1].userId;
+};
+const clearSchemaInMemoryDB = async () => {
+  await clearOrganizations();
+  await clearUsers();
+};
 beforeEach(async () => {
-  return await createOrganizationInMemoryDB();
+  return await initSchemaInMemoryDB();
 });
 
 afterEach(async () => {
-  return await deleteAllOrganizationsInMemoryDB();
+  return await clearSchemaInMemoryDB();
 });
 
-async function createOrganizationInMemoryDB() {
-  const organizationData = [
-    {
-      name: "org",
-      email: "any",
-      logo: null,
-    },
-    {
-      name: "org1",
-      email: "any1",
-      logo: null,
-    },
-  ];
-
-  let organizations: {
-    organization_id: number;
-    email: string;
-    name: string;
-    created_at: any;
-    logo: any;
-  }[] = [];
-  for (let organization of organizationData) {
-    const newOrganizationResponse = await db.query(sql`
-  SELECT * from insert_organization(${organization.name}::varchar, 
-                                    ${organization.email}::varchar, 
-                                    ${organization.logo}::bytea)
-  `);
-    organizations.push(newOrganizationResponse[0]);
-  }
-  organization1Id = organizations[0].organization_id;
-  organization2Id = organizations[1].organization_id;
-}
-
-async function deleteAllOrganizationsInMemoryDB() {
-  await db.query(sql`DELETE FROM organization;`);
-}
 it("creates projects successfully", async () => {
   const projectData = { name: "project" };
   let project = await createProject({
@@ -110,7 +96,7 @@ it("gets projects by organization id", async () => {
 
 it("gets projects by user id", async () => {});
 
-// it("fails to get projects by organization id", async () => {});
+it("fails to get projects by organization id", async () => {});
 
 // it("fails to get projects by id", async () => {});
 

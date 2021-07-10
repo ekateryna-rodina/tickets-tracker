@@ -1,7 +1,7 @@
 export interface IOrganizationInput {
   name: string;
   email: string;
-  logo?: string;
+  logo?: Buffer | string;
 }
 
 export interface IOrganizationInfo {
@@ -9,5 +9,5 @@ export interface IOrganizationInfo {
   name: string;
   email: string;
   createdAt: string;
-  logo?: string;
+  logo?: Buffer | string | undefined;
 }

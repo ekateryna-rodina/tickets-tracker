@@ -12,7 +12,7 @@ WHEN undefined_object THEN CREATE TYPE Roles AS ENUM (
     'superadmin',
     'organization',
     'admin',
-    'manager',
+    'superuser',
     'user'
 );
 END $$;
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS users(
 );
 CREATE TABLE IF NOT EXISTS user_role(
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(user_id) NOT NULL,
+    user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
     user_role Roles
 );
 CREATE TABLE IF NOT EXISTS organization(
@@ -53,9 +53,9 @@ ALTER TABLE ONLY project
 ALTER COLUMN created_at
 SET DEFAULT now_utc();
 CREATE TABLE IF NOT EXISTS project_user(
-    id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
-    project_id INTEGER REFERENCES project
+    project_id INTEGER REFERENCES project,
+    PRIMARY KEY(user_id, project_id)
 );
 CREATE OR REPLACE FUNCTION insert_user_with_role(
         email_ varchar(100),
