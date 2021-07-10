@@ -1,5 +1,9 @@
 import { db, sql } from "..";
-import { IProjectInfo, IProjectInput } from "../contracts/project";
+import {
+  IProjectInfo,
+  IProjectInput,
+  IUserProjectInfo,
+} from "../contracts/project";
 import { getOrganizationById } from "./organizationController";
 
 const _getProjectsFromQueryResponse = (queryResponse: any) => {
@@ -31,7 +35,7 @@ const createProject = async (data: IProjectInput) => {
                         );`);
   return _getProjectsFromQueryResponse(queryResponse)[0] || null;
 };
-const getProjectById = async (projectId: string | null | undefined) => {
+const getProjectById = async (projectId: number | null | undefined) => {
   if (!projectId) return null;
   try {
     const queryResponse = await db.query(sql`SELECT *
@@ -43,28 +47,51 @@ const getProjectById = async (projectId: string | null | undefined) => {
     console.log(error);
   }
 };
-const getProjectsByOrganizationId = async (organizationId: string) => {
+const getProjectsByOrganizationId = async (organizationId: number) => {
   try {
     const queryResponse = await db.query(sql`SELECT *
               FROM get_projects_by_organization_id(
-                      ${Number(organizationId)}::integer
+                      ${organizationId}::integer
                   );`);
 
     return _getProjectsFromQueryResponse(queryResponse);
   } catch (error) {
     console.log(error);
+    return null;
   }
 };
 
-const getProjectsByUserId = async (userId: string) => {
+// likely to be user to assign qa and pm to a project
+const assignProjectToUser = async (
+  userId: number,
+  projectId: number
+): Promise<null | IUserProjectInfo> => {
+  if (!projectId || !userId) {
+    throw new Error("UserId and projectId are required");
+  }
+
+  // foreign key in db constraint must throw an exception if project or user don't exist
+  try {
+    await db.query(
+      sql`INSERT INTO project_user(user_id, project_id) VALUES(${userId}::integer, ${projectId}::integer)`
+    );
+    return { userId, projectId };
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const getProjectsByUserId = async (userId: number) => {
   try {
     const queryResponse = await db.query(sql`SELECT *
                   FROM get_projects_by_user_id(
-                          ${Number(userId)}::integer
+                          ${userId}::integer
                       );`);
     return _getProjectsFromQueryResponse(queryResponse);
   } catch (error) {
     console.log(error);
+    return null;
   }
 };
 
@@ -73,4 +100,5 @@ export {
   getProjectById,
   getProjectsByOrganizationId,
   getProjectsByUserId,
+  assignProjectToUser,
 };

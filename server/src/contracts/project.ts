@@ -8,3 +8,8 @@ export interface IProjectInfo {
   name: string;
   organizationId: number;
 }
+
+export interface IUserProjectInfo {
+  userId: number;
+  projectId: number;
+}

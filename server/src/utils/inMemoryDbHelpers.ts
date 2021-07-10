@@ -60,4 +60,14 @@ async function clearUsers() {
   await db.query(sql`DELETE FROM users;`);
 }
 
-export { createUsers, createOrganizations, clearOrganizations, clearUsers };
+async function clearProjects() {
+  await db.query(sql`DELETE FROM project;`);
+}
+
+export {
+  clearProjects,
+  createUsers,
+  createOrganizations,
+  clearOrganizations,
+  clearUsers,
+};

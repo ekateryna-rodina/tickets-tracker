@@ -25,13 +25,16 @@ const canAccessProject = async (
   if (user.role === Roles.Organization) {
     const organization: IOrganizationInfo | null | undefined =
       await getOrganizationByUserId(user.userId);
+    if (!organization) {
+      throw new Error("Invalid request");
+    }
     const projects = await getProjectsByOrganizationId(
-      organization?.organizationId.toString() as string
+      +organization!.organizationId
     );
     return projects?.some((p) => p.projectId === projectId);
   }
   // if role is manager or user and there is the relation between userId and projectid
-  const projects = await getProjectsByUserId(user.userId);
+  const projects = await getProjectsByUserId(+user.userId);
   return projects?.some((p) => p.projectId === projectId);
 };
 

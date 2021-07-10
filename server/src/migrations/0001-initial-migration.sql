@@ -53,8 +53,8 @@ ALTER TABLE ONLY project
 ALTER COLUMN created_at
 SET DEFAULT now_utc();
 CREATE TABLE IF NOT EXISTS project_user(
-    user_id INTEGER REFERENCES users,
-    project_id INTEGER REFERENCES project,
+    user_id INTEGER REFERENCES users ON DELETE CASCADE,
+    project_id INTEGER REFERENCES project ON DELETE CASCADE,
     PRIMARY KEY(user_id, project_id)
 );
 CREATE OR REPLACE FUNCTION insert_user_with_role(
@@ -132,11 +132,17 @@ END;
 $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION get_projects_by_user_id(id_ integer) RETURNS table(
         project_id int,
-        name varchar
+        name varchar,
+        organization_id int,
+        created_at timestamp without time zone
     ) AS $$ BEGIN RETURN QUERY
-select *
+select project_user.project_id,
+    project.name,
+    project.organization_id,
+    project.created_at
 from project_user
-where user_id = $1;
+    INNER JOIN project on project.project_id = project_user.project_id
+where project_user.user_id = $1;
 END;
 $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION get_project_by_id(id_ integer) RETURNS table(
