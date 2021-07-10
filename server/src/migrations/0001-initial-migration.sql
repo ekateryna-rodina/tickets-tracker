@@ -33,18 +33,25 @@ CREATE TABLE IF NOT EXISTS organization(
     created_at timestamp without time zone,
     logo bytea
 );
+create function now_utc() returns timestamp as $$
+select now() at time zone 'utc';
+$$ language sql;
+ALTER TABLE ONLY organization
+ALTER COLUMN created_at
+SET DEFAULT now_utc();
 CREATE TABLE IF NOT EXISTS user_organization(
     user_id INTEGER PRIMARY KEY REFERENCES users,
     organization_id INTEGER REFERENCES organization
 );
 CREATE TABLE IF NOT EXISTS project(
     project_id SERIAL PRIMARY KEY,
-    name VARCHAR(100)
+    name VARCHAR(100),
+    organization_id INTEGER REFERENCES organization,
+    created_at timestamp without time zone
 );
-CREATE TABLE IF NOT EXISTS project_organization(
-    project_id INTEGER PRIMARY KEY REFERENCES project,
-    organization_id INTEGER REFERENCES organization
-);
+ALTER TABLE ONLY project
+ALTER COLUMN created_at
+SET DEFAULT now_utc();
 CREATE TABLE IF NOT EXISTS project_user(
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
@@ -116,12 +123,11 @@ CREATE OR REPLACE FUNCTION get_projects_by_organization_id(id_ integer) RETURNS 
         name varchar,
         organization_id int
     ) AS $$ BEGIN RETURN QUERY
-select project_organization.organization_id,
+select project.organization_id,
     project.project_id,
     project.name
 from project
-    left join project_organization on project_organization.project_id = project.project_id
-where project_organization.organization_id = $1;
+where project.organization_id = $1;
 END;
 $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION get_projects_by_user_id(id_ integer) RETURNS table(

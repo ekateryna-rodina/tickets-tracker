@@ -1,21 +1,20 @@
 CREATE OR REPLACE FUNCTION insert_organization(
         email_ varchar(100),
         name_ varchar(100),
-        created_at_ timestamp without time zone,
         logo_ bytea
     ) RETURNS table(
         organization_id integer,
         email varchar(100),
         name varchar(100),
-        created_at timestamp without time zone,
+        created_at timestamp,
         logo bytea
     ) AS $$ BEGIN
-INSERT INTO organization (email, name, created_at, logo)
-VALUES ($1, $2, $3, $4);
+INSERT INTO organization (email, name, logo)
+VALUES ($1, $2, $3);
 RETURN QUERY
-SELECT *
-FROM organization
-WHERE email = $1;
+select *
+from organization
+where organization.email = $1;
 END;
 $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION get_organization_by_id(id int) RETURNS table(
@@ -27,6 +26,6 @@ CREATE OR REPLACE FUNCTION get_organization_by_id(id int) RETURNS table(
     ) AS $$ BEGIN RETURN QUERY
 SELECT *
 FROM organization
-WHERE organization_id = $1;
+WHERE organization.organization_id = $1;
 END;
 $$ LANGUAGE plpgsql;
