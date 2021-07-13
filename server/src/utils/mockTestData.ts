@@ -36,3 +36,12 @@ export const organizations = [
     logo: Buffer.from([]),
   },
 ];
+
+export const backlogs: {
+  name: string;
+  description: string;
+}[] = [
+  { name: "name1", description: "description1" },
+  { name: "name2", description: "description2" },
+  { name: "name3", description: "description3" },
+];

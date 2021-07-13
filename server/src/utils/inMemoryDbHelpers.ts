@@ -1,8 +1,10 @@
 import { db, sql } from "..";
+import { IBacklogInput } from "../contracts/backlog";
 import {
   IOrganizationInfo,
   IOrganizationInput,
 } from "../contracts/organization";
+import { IProjectInput } from "../contracts/project";
 import { IUserInput } from "../contracts/user";
 import { Roles } from "./roleEnum";
 
@@ -52,6 +54,35 @@ const createOrganizations = async (
   return organizations;
 };
 
+const createProjects = async (mockProjects: IProjectInput[]) => {
+  let projectIds = [];
+  for (let project of mockProjects) {
+    const queryResponse = await db.query(sql`SELECT *
+    FROM insert_project(
+            ${project.name}::varchar,
+            ${project.organizationId}::integer
+        );`);
+    projectIds.push(queryResponse[0].project_id);
+  }
+  return projectIds;
+};
+
+const createBacklogs = async (mockBacklogs: IBacklogInput[]) => {
+  let backlogs = [];
+  for (let backlog of mockBacklogs) {
+    const backlogResponse =
+      await db.query(sql`SELECT * FROM insert_backlog(${backlog.projectId}::integer,
+        ${backlog.creatorId}::integer, ${backlog.name}::varchar, ${backlog.description}::varchar, ${backlog.sprintId}::integer, ${backlog.estimatedAt}::timestamp)`);
+    backlogs.push({
+      ...backlogResponse[0],
+      backlogId: backlogResponse[0].backlog_id,
+      creatorId: backlogResponse[0].creator_id,
+      projectId: backlogResponse[0].project_id,
+    });
+  }
+  return backlogs;
+};
+
 async function clearOrganizations() {
   await db.query(sql`DELETE FROM organization;`);
 }
@@ -64,10 +95,17 @@ async function clearProjects() {
   await db.query(sql`DELETE FROM project;`);
 }
 
+async function clearBacklogs() {
+  await db.query(sql`DELETE FROM backlog;`);
+}
+
 export {
   clearProjects,
   createUsers,
   createOrganizations,
   clearOrganizations,
   clearUsers,
+  createProjects,
+  createBacklogs,
+  clearBacklogs,
 };
