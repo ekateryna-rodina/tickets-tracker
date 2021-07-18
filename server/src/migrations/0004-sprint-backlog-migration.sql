@@ -14,31 +14,25 @@ CREATE TABLE IF NOT EXISTS backlog(
         sprint_id INTEGER NULL REFERENCES sprint(sprint_id) DEFAULT NULL,
         created_at timestamp without time zone,
         estimated_at timestamp without time zone DEFAULT NULL,
-        ended_at timestamp without time zone DEFAULT NULL,
+        completed_at timestamp without time zone DEFAULT NULL,
         description varchar
 );
 ALTER TABLE backlog
 ALTER COLUMN created_at
 SET DEFAULT now_utc();
-CREATE TABLE IF NOT EXISTS backlog_file(
-    file_id SERIAL PRIMARY KEY,
-    backlog_id INTEGER REFERENCES backlog,
-    name VARCHAR,
-    content bytea,
-    uploaded_at timestamp without time zone default now_utc()
-);
 CREATE OR REPLACE FUNCTION get_backlog_by_id(id_ integer) RETURNS table(
         backlog_id int,
         project_id int,
         creator_id int,
         name varchar,
         sprint_id int,
+        created_at timestamp without time zone,
         estimated_at timestamp without time zone,
-        ended_at timestamp without time zone,
+        completed_at timestamp without time zone,
         description varchar
     ) AS $$ BEGIN RETURN QUERY
 select *
-from backlog_id
+from backlog
 where backlog.backlog_id = $1;
 END;
 $$ LANGUAGE plpgsql;
@@ -57,7 +51,7 @@ CREATE OR REPLACE FUNCTION insert_backlog(
         sprint_id int,
         estimated_at timestamp without time zone,
         created_at timestamp without time zone,
-        ended_at timestamp without time zone,
+        completed_at timestamp without time zone,
         description varchar
     ) AS $$ BEGIN
 INSERT INTO backlog (

@@ -1,6 +1,6 @@
 import { db, sql } from "..";
 import { IBacklogInfo, IBacklogInput } from "../contracts/backlog";
-import { composeUpdateQuery } from "../utils/dbHelpers";
+import { dbEntityToObject } from "../utils/dbHelpers";
 
 const createBacklog = async (
   data: IBacklogInput
@@ -11,12 +11,9 @@ const createBacklog = async (
     name: nameInput,
     sprintId,
     estimatedAt,
-    endedAt,
     description: descriptionInput,
   } = data;
 
-  console.log("dataaa");
-  console.log(data);
   if (!projectId || !creatorId || !nameInput || !descriptionInput) {
     throw new Error("ProjectId, creatorId, name and description are required");
   }
@@ -32,7 +29,7 @@ const createBacklog = async (
       name,
       sprint_id,
       estimated_at,
-      ended_at,
+      completed_at,
       description,
       created_at,
     } = backlogResponse[0];
@@ -44,7 +41,7 @@ const createBacklog = async (
       sprintId: sprint_id,
       estimatedAt: estimated_at,
       createdAt: created_at,
-      endedAt: ended_at,
+      completedAt: completed_at,
       description,
     };
   } catch (error) {
@@ -73,13 +70,38 @@ const updateBacklog = async (backlogId: number, data: IBacklogInput) => {
   if ("projectId" in data || "creatorId" in data) {
     throw new Error("Cannot update project and creator data");
   }
-
-  const query = composeUpdateQuery<IBacklogInput>("backlog", data, backlogId);
-
+  let updateResponse;
   try {
-    await db.query(sql`${query}`);
-    // has to return record data
-    return data;
+    if ("name" in data) {
+      updateResponse = await db.query(
+        sql`UPDATE backlog SET name = ${data.name} WHERE backlog_id = ${backlogId} RETURNING *`
+      );
+    }
+    if ("sprintId" in data) {
+      updateResponse = await db.query(
+        sql`UPDATE backlog SET sprint_id = ${data.sprintId} WHERE backlog_id = ${backlogId} RETURNING *`
+      );
+    }
+    if ("estimatedAt" in data) {
+      updateResponse = await db.query(
+        sql`UPDATE backlog SET estimated_at = ${data.estimatedAt} WHERE backlog_id = ${backlogId} RETURNING *`
+      );
+    }
+    if ("completedAt" in data) {
+      updateResponse = await db.query(
+        sql`UPDATE backlog SET completed_at = ${data.completedAt} WHERE backlog_id = ${backlogId} RETURNING *`
+      );
+    }
+
+    if ("description" in data) {
+      updateResponse = await db.query(
+        sql`UPDATE backlog SET description = ${data.description} WHERE backlog_id = ${backlogId} RETURNING *`
+      );
+    }
+
+    if (!updateResponse || !updateResponse[0]) return null;
+    let obj = dbEntityToObject<IBacklogInfo>(updateResponse[0]);
+    return obj;
   } catch (error) {
     console.log(error);
     return null;

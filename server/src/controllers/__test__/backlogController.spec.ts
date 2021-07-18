@@ -14,7 +14,11 @@ import {
   projects as mockProjects,
   users,
 } from "../../utils/mockTestData";
-import { createBacklog } from "../backlogController";
+import {
+  createBacklog,
+  getBacklogById,
+  updateBacklog,
+} from "../backlogController";
 let organization1Id: number;
 let organization2Id: number;
 
@@ -92,8 +96,27 @@ it("updates backlog successfully", async () => {
   const newBacklogs = await createBacklogs(
     backlogs.map((b) => ({ ...b, projectId: project1Id, creatorId: user1Id }))
   );
-  // await updateBacklog
+  await updateBacklog(newBacklogs[0].backlogId, {
+    name: "change backlog name",
+    description: "new description",
+  });
+  let expectedBacklog = await getBacklogById(newBacklogs[0].backlogId);
+  expect.assertions(2);
+
+  expect(expectedBacklog?.name).toEqual("change backlog name");
+  expect(expectedBacklog?.description).toEqual("new description");
 });
-it("fails to update backlog successfully", async () => {});
+it("fails to update backlog successfully", async () => {
+  const newBacklogs = await createBacklogs(
+    backlogs.map((b) => ({ ...b, projectId: project1Id, creatorId: user1Id }))
+  );
+  await expect(
+    updateBacklog(newBacklogs[0].backlogId, { creatorId: 563 })
+  ).rejects.toThrow();
+});
 it("deletes backlog successfully", async () => {});
 it("fails to delete backlog", async () => {});
+it("returns backlog by id", async () => {});
+it("returns backlog by project", async () => {});
+it("returns backlog by sprint", async () => {});
+it("returns backlog by user", async () => {});

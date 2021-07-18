@@ -6,7 +6,7 @@ export interface IBacklogInput {
   name?: string;
   sprintId?: number;
   estimatedAt?: string;
-  endedAt?: string;
+  completedAt?: string;
   description?: string;
   attachments?: [];
 }

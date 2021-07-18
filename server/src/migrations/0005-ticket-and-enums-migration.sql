@@ -1,0 +1,122 @@
+DO $$ BEGIN PERFORM 'TicketStatus'::regtype;
+EXCEPTION
+WHEN undefined_object THEN CREATE TYPE TicketStatus AS ENUM (
+    'inProgress',
+    'codeReview',
+    'testing',
+    'reopened',
+    'done',
+    'stuck',
+    'requiresDiscussion'
+);
+END $$;
+DO $$ BEGIN PERFORM 'TicketType'::regtype;
+EXCEPTION
+WHEN undefined_object THEN CREATE TYPE TicketType AS ENUM ('defect', 'task');
+END $$;
+DO $$ BEGIN PERFORM 'Priority'::regtype;
+EXCEPTION
+WHEN undefined_object THEN CREATE TYPE Priority AS ENUM (
+    'critical',
+    'high',
+    'medium',
+    'low'
+);
+END $$;
+CREATE TABLE IF NOT EXISTS attachment(
+    file_id SERIAL PRIMARY KEY,
+    ticket_id INTEGER REFERENCES backlog,
+    name VARCHAR,
+    content bytea,
+    icon bytea,
+    uploaded_at timestamp without time zone default now_utc()
+);
+CREATE TABLE IF NOT EXISTS ticket(
+    ticket_id SERIAL PRIMARY KEY,
+    backlog_id INTEGER NOT NULL REFERENCES backlog ON DELETE
+    SET NULL,
+        creator_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE
+    SET NULL,
+        name VARCHAR(255) NOT NULL,
+        type TicketType NOT NULL,
+        created_at timestamp without time zone,
+        estimated_at timestamp without time zone DEFAULT NULL,
+        completed_at timestamp without time zone DEFAULT NULL,
+        description varchar,
+        status TicketStatus NOT NULL,
+        priority Priority,
+        environment varchar,
+        branch varchar
+);
+CREATE OR REPLACE FUNCTION get_ticket_by_id(id_ integer) RETURNS table(
+        ticket_id int,
+        backlog_id int,
+        creator_id int,
+        name varchar,
+        type TicketType,
+        created_at timestamp,
+        estimated_at timestamp without time zone,
+        completed_at timestamp without time zone,
+        description varchar,
+        status TicketStatus,
+        priority Priority,
+        environment varchar,
+        branch varchar
+    ) AS $$ BEGIN RETURN QUERY
+select *
+from ticket
+where ticket.ticket_id = $1;
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION insert_ticket(
+        backlog_id_ int,
+        creator_id_ int,
+        name_ varchar,
+        type_ TicketType,
+        estimated_at_ timestamp without time zone,
+        description_ varchar,
+        status_ TicketStatus,
+        priority_ Priority,
+        environment_ varchar,
+        branch_ varchar
+    ) RETURNS table(
+        ticket_id int,
+        backlog_id int,
+        creator_id int,
+        name varchar,
+        type TicketType,
+        created_at timestamp,
+        estimated_at timestamp without time zone,
+        completed_at timestamp without time zone,
+        description varchar,
+        status TicketStatus,
+        priority Priority,
+        environment varchar,
+        branch varchar
+    ) AS $$ BEGIN
+INSERT INTO ticket (
+        backlog_id,
+        creator_id,
+        name,
+        type,
+        estimated_at,
+        description,
+        status,
+        priority,
+        environment,
+        branch
+    )
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 10);
+RETURN QUERY
+select *
+from ticket
+where ticket.backlog_id = $1
+    and ticket.name = $3;
+END;
+$$ LANGUAGE plpgsql;
+-- CREATE OR REPLACE FUNCTION delete_ticket(id_ integer) RETURNS int AS $$ BEGIN
+-- DELETE FROM ticket
+-- where ticket.ticket_id = $1;
+-- RETURN id_;
+-- END;
+-- $$ LANGUAGE plpgsql;

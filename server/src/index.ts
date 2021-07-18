@@ -13,7 +13,7 @@ declare global {
     }
   }
 }
-dotenv.config({ path: "var.env" });
+dotenv.config({ path: ".env" });
 const start = async () => {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL must be defined");
