@@ -17,7 +17,8 @@ import {
 import {
   createBacklog,
   getBacklogById,
-  updateBacklog,
+  updateBacklogDescription,
+  updateBacklogName,
 } from "../backlogController";
 let organization1Id: number;
 let organization2Id: number;
@@ -92,26 +93,31 @@ it("fails to create backlog", async () => {
     errorMsg
   );
 });
-it("updates backlog successfully", async () => {
+it("updates backlog's name successfully", async () => {
   const newBacklogs = await createBacklogs(
     backlogs.map((b) => ({ ...b, projectId: project1Id, creatorId: user1Id }))
   );
-  await updateBacklog(newBacklogs[0].backlogId, {
-    name: "change backlog name",
-    description: "new description",
-  });
+  await updateBacklogName(newBacklogs[0].backlogId, "change backlog name");
   let expectedBacklog = await getBacklogById(newBacklogs[0].backlogId);
   expect.assertions(2);
 
   expect(expectedBacklog?.name).toEqual("change backlog name");
-  expect(expectedBacklog?.description).toEqual("new description");
+  await expect(
+    updateBacklogName(newBacklogs[0].backlogId, "")
+  ).rejects.toThrow();
+  // expect(expectedBacklog?.description).toEqual("new description");
 });
-it("fails to update backlog successfully", async () => {
+it("updates backlog's description successfully", async () => {
   const newBacklogs = await createBacklogs(
     backlogs.map((b) => ({ ...b, projectId: project1Id, creatorId: user1Id }))
   );
+  await updateBacklogName(newBacklogs[0].backlogId, "new description");
+  let expectedBacklog = await getBacklogById(newBacklogs[0].backlogId);
+  expect.assertions(2);
+
+  expect(expectedBacklog?.description).toEqual("new description");
   await expect(
-    updateBacklog(newBacklogs[0].backlogId, { creatorId: 563 })
+    updateBacklogDescription(newBacklogs[0].backlogId, "")
   ).rejects.toThrow();
 });
 it("deletes backlog successfully", async () => {});

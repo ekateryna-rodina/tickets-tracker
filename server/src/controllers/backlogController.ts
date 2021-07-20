@@ -65,39 +65,86 @@ const deleteBacklog = async (backlogId: number): Promise<number | null> => {
     return null;
   }
 };
-
-const updateBacklog = async (backlogId: number, data: IBacklogInput) => {
-  if ("projectId" in data || "creatorId" in data) {
-    throw new Error("Cannot update project and creator data");
+const updateBacklogName = async (backlogId: number, name: string) => {
+  let updateResponse;
+  if (!name || !backlogId) throw new Error("Inavalid request");
+  try {
+    updateResponse = await db.query(
+      sql`UPDATE backlog SET name = ${name} WHERE backlog_id = ${backlogId} RETURNING *`
+    );
+    if (!updateResponse || !updateResponse[0]) return null;
+    let obj = dbEntityToObject<IBacklogInfo>(updateResponse[0]);
+    return obj;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
+};
+
+const updateBacklogSprint = async (backlogId: number, sprintId: number) => {
+  if (!sprintId || !backlogId) throw new Error("Inavalid request");
   let updateResponse;
   try {
-    if ("name" in data) {
-      updateResponse = await db.query(
-        sql`UPDATE backlog SET name = ${data.name} WHERE backlog_id = ${backlogId} RETURNING *`
-      );
-    }
-    if ("sprintId" in data) {
-      updateResponse = await db.query(
-        sql`UPDATE backlog SET sprint_id = ${data.sprintId} WHERE backlog_id = ${backlogId} RETURNING *`
-      );
-    }
-    if ("estimatedAt" in data) {
-      updateResponse = await db.query(
-        sql`UPDATE backlog SET estimated_at = ${data.estimatedAt} WHERE backlog_id = ${backlogId} RETURNING *`
-      );
-    }
-    if ("completedAt" in data) {
-      updateResponse = await db.query(
-        sql`UPDATE backlog SET completed_at = ${data.completedAt} WHERE backlog_id = ${backlogId} RETURNING *`
-      );
-    }
+    updateResponse = await db.query(
+      sql`UPDATE backlog SET sprint_id = ${sprintId} WHERE backlog_id = ${backlogId} RETURNING *`
+    );
+    if (!updateResponse || !updateResponse[0]) return null;
+    let obj = dbEntityToObject<IBacklogInfo>(updateResponse[0]);
+    return obj;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 
-    if ("description" in data) {
-      updateResponse = await db.query(
-        sql`UPDATE backlog SET description = ${data.description} WHERE backlog_id = ${backlogId} RETURNING *`
-      );
-    }
+const updateBacklogEstimate = async (
+  backlogId: number,
+  estimatedAt: string
+) => {
+  if (!estimatedAt || !backlogId) throw new Error("Inavalid request");
+  let updateResponse;
+  try {
+    updateResponse = await db.query(
+      sql`UPDATE backlog SET estimated_at = ${estimatedAt} WHERE backlog_id = ${backlogId} RETURNING *`
+    );
+    if (!updateResponse || !updateResponse[0]) return null;
+    let obj = dbEntityToObject<IBacklogInfo>(updateResponse[0]);
+    return obj;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const updateBacklogCompletionDate = async (
+  backlogId: number,
+  completedAt: string
+) => {
+  if (!completedAt || !backlogId) throw new Error("Inavalid request");
+  let updateResponse;
+  try {
+    updateResponse = await db.query(
+      sql`UPDATE backlog SET completed_at = ${completedAt} WHERE backlog_id = ${backlogId} RETURNING *`
+    );
+    if (!updateResponse || !updateResponse[0]) return null;
+    let obj = dbEntityToObject<IBacklogInfo>(updateResponse[0]);
+    return obj;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const updateBacklogDescription = async (
+  backlogId: number,
+  description: string
+) => {
+  if (!description || !backlogId) throw new Error("Inavalid request");
+  let updateResponse;
+  try {
+    updateResponse = await db.query(
+      sql`UPDATE backlog SET description = ${description} WHERE backlog_id = ${backlogId} RETURNING *`
+    );
 
     if (!updateResponse || !updateResponse[0]) return null;
     let obj = dbEntityToObject<IBacklogInfo>(updateResponse[0]);
@@ -125,4 +172,13 @@ const getBacklogById = async (
   }
 };
 
-export { createBacklog, deleteBacklog, updateBacklog, getBacklogById };
+export {
+  createBacklog,
+  deleteBacklog,
+  updateBacklogName,
+  updateBacklogDescription,
+  updateBacklogCompletionDate,
+  updateBacklogSprint,
+  updateBacklogEstimate,
+  getBacklogById,
+};
