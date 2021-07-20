@@ -1,5 +1,6 @@
 import { IBacklogInput } from "../../contracts/backlog";
 import {
+  clearBacklogs,
   clearOrganizations,
   clearProjects,
   clearUsers,
@@ -50,6 +51,7 @@ const initSchemaInMemoryDB = async () => {
   project3Id = newProjectIds[2];
 };
 const clearSchemaInMemoryDB = async () => {
+  await clearBacklogs();
   await clearProjects();
   await clearOrganizations();
   await clearUsers();
@@ -111,7 +113,7 @@ it("updates backlog's description successfully", async () => {
   const newBacklogs = await createBacklogs(
     backlogs.map((b) => ({ ...b, projectId: project1Id, creatorId: user1Id }))
   );
-  await updateBacklogName(newBacklogs[0].backlogId, "new description");
+  await updateBacklogDescription(newBacklogs[0].backlogId, "new description");
   let expectedBacklog = await getBacklogById(newBacklogs[0].backlogId);
   expect.assertions(2);
 
@@ -120,6 +122,7 @@ it("updates backlog's description successfully", async () => {
     updateBacklogDescription(newBacklogs[0].backlogId, "")
   ).rejects.toThrow();
 });
+// TODO: implement these methods
 it("deletes backlog successfully", async () => {});
 it("fails to delete backlog", async () => {});
 it("returns backlog by id", async () => {});

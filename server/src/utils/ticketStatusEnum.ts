@@ -1,9 +1,9 @@
 export enum TicketStatus {
-  InProgress,
-  CodeReview,
-  Testing,
-  Reopened,
-  Done,
-  Stuck,
-  RequiresDiscussion,
+  InProgress = "inProgress",
+  CodeReview = "codeReview",
+  Testing = "testing",
+  Reopened = "reopened",
+  Done = "done",
+  Stuck = "stuck",
+  RequiresDiscussion = "requiresDiscussion",
 }

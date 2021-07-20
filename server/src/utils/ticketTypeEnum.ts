@@ -1,4 +1,4 @@
 export enum TicketType {
-  Defect,
-  Task,
+  Defect = "defect",
+  Task = "task",
 }

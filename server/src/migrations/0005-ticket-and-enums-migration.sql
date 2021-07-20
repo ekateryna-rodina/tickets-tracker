@@ -33,9 +33,9 @@ CREATE TABLE IF NOT EXISTS attachment(
 );
 CREATE TABLE IF NOT EXISTS ticket(
     ticket_id SERIAL PRIMARY KEY,
-    backlog_id INTEGER NOT NULL REFERENCES backlog ON DELETE
+    backlog_id INTEGER REFERENCES backlog ON DELETE
     SET NULL,
-        creator_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE
+        creator_id INTEGER REFERENCES users(user_id) ON DELETE
     SET NULL,
         name VARCHAR(255) NOT NULL,
         type TicketType NOT NULL,
@@ -48,6 +48,9 @@ CREATE TABLE IF NOT EXISTS ticket(
         environment varchar,
         branch varchar
 );
+ALTER TABLE ticket
+ALTER COLUMN created_at
+SET DEFAULT now_utc();
 CREATE OR REPLACE FUNCTION get_ticket_by_id(id_ integer) RETURNS table(
         ticket_id int,
         backlog_id int,
@@ -69,16 +72,16 @@ where ticket.ticket_id = $1;
 END;
 $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION insert_ticket(
-        backlog_id_ int,
-        creator_id_ int,
+        backlog_id_ integer,
+        creator_id_ integer,
         name_ varchar,
         type_ TicketType,
-        estimated_at_ timestamp without time zone,
-        description_ varchar,
         status_ TicketStatus,
         priority_ Priority,
         environment_ varchar,
-        branch_ varchar
+        branch_ varchar,
+        estimated_at_ timestamp without time zone default null,
+        description_ varchar default null
     ) RETURNS table(
         ticket_id int,
         backlog_id int,
@@ -99,14 +102,14 @@ INSERT INTO ticket (
         creator_id,
         name,
         type,
-        estimated_at,
-        description,
         status,
         priority,
         environment,
-        branch
+        branch,
+        estimated_at,
+        description
     )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 10);
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);
 RETURN QUERY
 select *
 from ticket
