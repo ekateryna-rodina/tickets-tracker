@@ -1,5 +1,5 @@
 import { db, sql } from "..";
-import { IBacklogInfo, IBacklogInput } from "../contracts/backlog";
+import { IBacklogInfo, IBacklogInput } from "../../../common/contracts/backlog";
 import { dbEntityToObject } from "../utils/dbHelpers";
 
 const createBacklog = async (

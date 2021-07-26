@@ -1,5 +1,5 @@
 import { db, sql } from "..";
-import { ITicketInfo, ITicketInput } from "../contracts/ticket";
+import { ITicketInfo, ITicketInput } from "../../../common/contracts/ticket";
 import { dbEntityToObject } from "../utils/dbHelpers";
 import { Priority } from "../utils/priorityEnum";
 import { TicketStatus } from "../utils/ticketStatusEnum";

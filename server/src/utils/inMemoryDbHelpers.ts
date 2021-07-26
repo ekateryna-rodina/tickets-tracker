@@ -1,11 +1,11 @@
 import { db, sql } from "..";
-import { IBacklogInput } from "../contracts/backlog";
+import { IBacklogInput } from "../../../common/contracts/backlog";
 import {
   IOrganizationInfo,
   IOrganizationInput,
-} from "../contracts/organization";
-import { IProjectInput } from "../contracts/project";
-import { IUserInput } from "../contracts/user";
+} from "../../../common/contracts/organization";
+import { IProjectInput } from "../../../common/contracts/project";
+import { IUserInput } from "../../../common/contracts/user";
 import { Roles } from "./roleEnum";
 
 const createUsers = async (mockUsers: IUserInput[]) => {

@@ -1,5 +1,9 @@
 import { db, sql } from "..";
-import { IUserInfo, IUserInput, IUserUnsecure } from "../contracts/user";
+import {
+  IUserInfo,
+  IUserInput,
+  IUserUnsecure,
+} from "../../../common/contracts/user";
 
 const createUser = async (data: IUserInput): Promise<IUserUnsecure | null> => {
   const { email: emailInput, password: passwordInput, role } = data;

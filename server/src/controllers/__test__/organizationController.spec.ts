@@ -1,4 +1,4 @@
-import { IOrganizationInput } from "../../contracts/organization";
+import { IOrganizationInput } from "../../../../common/contracts/organization";
 import {
   createOrganization,
   getOrganizationById,

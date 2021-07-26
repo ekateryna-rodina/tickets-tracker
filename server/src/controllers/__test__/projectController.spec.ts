@@ -1,4 +1,4 @@
-import { IProjectInput } from "../../contracts/project";
+import { IProjectInput } from "../../../../common/contracts/project";
 import {
   clearOrganizations,
   clearProjects,

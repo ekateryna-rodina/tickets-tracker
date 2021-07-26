@@ -1,8 +1,8 @@
 import createConnectionPool, { ConnectionPool, sql } from "@databases/pg";
 import dotenv from "dotenv";
+import { IProjectInfo } from "../../common/contracts/project";
+import { IUserInfo } from "../../common/contracts/user";
 import { app } from "./app";
-import { IProjectInfo } from "./contracts/project";
-import { IUserInfo } from "./contracts/user";
 
 let db: ConnectionPool;
 declare global {

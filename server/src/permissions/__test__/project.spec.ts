@@ -1,6 +1,9 @@
-import { IOrganizationInfo } from "../../contracts/organization";
-import { IProjectInfo } from "../../contracts/project";
-import { IUserInfo } from "../../contracts/user";
+// import { IOrganizationInfo } from "../../contracts/organization";
+// import { IProjectInfo } from "../../contracts/project";
+// import { IUserInfo } from "../../contracts/user";
+import { Organization } from "../../../../common/contracts/organization";
+import { IProjectInfo } from "../../../../common/contracts/project";
+import { IUserInfo } from "../../../../common/contracts/user";
 import { Roles } from "../../utils/roleEnum";
 import { canAccessProject } from "../project";
 
@@ -14,7 +17,7 @@ let project: IProjectInfo = {
   name: "project",
   organizationId: 1,
 };
-let organization: IOrganizationInfo = {
+let organization: Organization = {
   organizationId: 1,
   name: "org",
   email: "email",

@@ -3,7 +3,8 @@ import { db, sql } from "..";
 import {
   IOrganizationInfo,
   IOrganizationInput,
-} from "../contracts/organization";
+  Organization,
+} from "../../../common/contracts/organization";
 
 const createOrganization = async (
   data: IOrganizationInput
@@ -20,7 +21,7 @@ const createOrganization = async (
     `);
     if (!organizations[0]) return null;
     const { organization_id, email, name, created_at, logo } = organizations[0];
-    const response: IOrganizationInfo = {
+    const response: Organization = {
       organizationId: organization_id,
       email,
       name,
@@ -36,7 +37,7 @@ const createOrganization = async (
 
 const getOrganizationById = async (
   organizationId: number
-): Promise<IOrganizationInfo | null> => {
+): Promise<Organization | null> => {
   if (!organizationId) {
     throw new Error("Organization id is required");
   }
@@ -61,7 +62,7 @@ const getOrganizationById = async (
 
 const getOrganizationByUserId = async (
   userId: string
-): Promise<IOrganizationInfo | null> => {
+): Promise<Organization | null> => {
   if (!userId) return null;
   try {
     const organizations = await db.query(sql`SELECT *

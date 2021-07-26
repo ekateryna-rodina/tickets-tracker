@@ -1,5 +1,5 @@
-import { IOrganizationInfo } from "../../contracts/organization";
-import { IUserInfo } from "../../contracts/user";
+import { Organization } from "../../../../common/contracts/organization";
+import { IUserInfo } from "../../../../common/contracts/user";
 import { Roles } from "../../utils/roleEnum";
 import { canAccessOrganization } from "../organization";
 
@@ -8,7 +8,7 @@ let user: IUserInfo = {
   email: "email",
   role: Roles.User,
 };
-let organization: IOrganizationInfo = {
+let organization: Organization = {
   organizationId: 2,
   name: "org",
   email: "mail",

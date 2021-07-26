@@ -1,4 +1,4 @@
-import { IUserInfo } from "../contracts/user";
+import { IUserInfo } from "../../../common/contracts/user";
 import { getOrganizationByUserId } from "../controllers/organizationController";
 import { Roles } from "../utils/roleEnum";
 

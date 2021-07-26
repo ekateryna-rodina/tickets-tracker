@@ -1,4 +1,4 @@
-import { IUserInput } from "../../contracts/user";
+import { IUserInput } from "../../../../common/contracts/user";
 import { db, sql } from "../../index";
 import { Roles } from "../../utils/roleEnum";
 import { createUser, getUserById } from "../userController";

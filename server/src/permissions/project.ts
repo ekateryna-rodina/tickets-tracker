@@ -1,6 +1,6 @@
-import { IOrganizationInfo } from "../contracts/organization";
-import { IProjectInfo } from "../contracts/project";
-import { IUserInfo } from "../contracts/user";
+import { IOrganizationInfo } from "../../../common/contracts/organization";
+import { IProjectInfo } from "../../../common/contracts/project";
+import { IUserInfo } from "../../../common/contracts/user";
 import { getOrganizationByUserId } from "../controllers/organizationController";
 import {
   getProjectsByOrganizationId,

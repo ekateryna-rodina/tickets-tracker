@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { IProjectInfo } from "../contracts/project";
+import { IProjectInfo } from "../../../common/contracts/project";
 import { getProjectById } from "../controllers/projectController";
 const setProject = async (req: Request, res: Response, next: NextFunction) => {
   const { projectId } = req.params;

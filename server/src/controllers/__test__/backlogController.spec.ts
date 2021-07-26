@@ -1,4 +1,4 @@
-import { IBacklogInput } from "../../contracts/backlog";
+import { IBacklogInput } from "../../../../common/contracts/backlog";
 import {
   clearBacklogs,
   clearOrganizations,

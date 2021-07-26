@@ -3,7 +3,7 @@ import {
   IProjectInfo,
   IProjectInput,
   IUserProjectInfo,
-} from "../contracts/project";
+} from "../../../common/contracts/project";
 import { getOrganizationById } from "./organizationController";
 
 const _getProjectsFromQueryResponse = (queryResponse: any) => {
