@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { ProgressBar } from "react-bootstrap";
 import pic from "../assets/images/randomCard.jpg";
 import cardStyles from "../styles/Card.module.scss";
 import CardUsers from "./CardUsers";
@@ -22,10 +23,15 @@ const Card = () => {
       <div className={cardStyles.image}>
         <Image alt="" src={pic} layout="responsive" />
       </div>
-      <CardUsers />
-      <div className={cardStyles.metaData}>
-        <div className={cardStyles.attachments}></div>
-        <div className={cardStyles.comments}></div>
+      <div className="w-100 d-flex flex-row justify-content-between align-items-center">
+        <CardUsers />
+        <div className={cardStyles.metaData}>
+          {true && <i className="fas fa-paperclip fa-lg"></i>}
+          {true && <i className="far fa-comments fa-lg"></i>}
+        </div>
+      </div>
+      <div className="w-100 mt-3">
+        <ProgressBar variant="success" now={40} style={{ height: "0.2rem" }} />
       </div>
     </div>
   );

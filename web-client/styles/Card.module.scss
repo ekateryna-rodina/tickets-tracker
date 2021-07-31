@@ -45,4 +45,15 @@
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
+  .metaData {
+    padding-top: 3px;
+    i {
+      margin-left: 0.5rem;
+      color: gray;
+    }
+  }
+
+  .progress {
+    background-color: red !important;
+  }
 }
