@@ -1,0 +1,48 @@
+@import "colors";
+.container {
+  margin: 1rem 1rem;
+  padding: 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: $color-white;
+  height: auto;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.1),
+    0 0 8px 1px rgba(0, 0, 0, 0.1);
+
+  .storyName {
+    width: auto;
+    height: auto;
+    border: 1px dotted red;
+    padding: 0.2rem 0.3rem;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+  }
+
+  .id {
+    color: $color-primary;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .name {
+    margin-top: 0.5rem;
+  }
+
+  .image {
+    width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,26 @@
+@import "colors";
+
+nav {
+  background-image: url();
+  height: 4rem;
+  background-color: rgba($color-primary, 1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    li {
+      list-style-type: none;
+      a {
+        div {
+          display: "grid";
+        }
+      }
+    }
+  }
+}
