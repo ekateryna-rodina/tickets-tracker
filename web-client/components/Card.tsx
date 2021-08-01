@@ -24,8 +24,10 @@ const Card = () => {
         <Image alt="" src={pic} layout="responsive" />
       </div>
       <div className="w-100 d-flex flex-row justify-content-between align-items-center">
-        <CardUsers />
+        <CardUsers size={2} />
         <div className={cardStyles.metaData}>
+          {/* <span>Sept, 5</span> */}
+          {true && <i className="fas fa-hourglass-end fa-lg"></i>}
           {true && <i className="fas fa-paperclip fa-lg"></i>}
           {true && <i className="far fa-comments fa-lg"></i>}
         </div>
