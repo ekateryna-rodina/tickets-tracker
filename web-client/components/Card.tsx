@@ -7,7 +7,7 @@ import CardUsers from "./CardUsers";
 
 const Card = () => {
   return (
-    <div className={cardStyles.container}>
+    <div className={cardStyles.container} draggable={true} id="draggableCard">
       <div
         className="d-flex flex-row justify-content-between align-items-center"
         style={{ width: "100%" }}
