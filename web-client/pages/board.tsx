@@ -1,4 +1,4 @@
-import React from "react";
+import React, { DragEvent } from "react";
 import { Button } from "react-bootstrap";
 import { Provider } from "react-redux";
 import Select from "react-select";
@@ -43,10 +43,13 @@ export default function Board({ boardData }: BoardProps) {
     e.stopPropagation();
     console.log("enter");
   };
-  const onDragLeave = (e) => {
+  const onDragStart = (
+    e: DragEvent,
+    dragData: { group: string; item: string }
+  ) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("leave");
+    console.log("star");
   };
   const renderColumn = (c: string) => {
     return (
@@ -59,7 +62,7 @@ export default function Board({ boardData }: BoardProps) {
             onDragOver={onDragOver}
             onDrop={onDrop}
             onDragEnter={onDragEnter}
-            onDragLeave={onDragLeave}
+            onDragStart={(e) => onDragStart(e, { group: c, item: "card_id" })}
           >
             <Card />
             <Card />
