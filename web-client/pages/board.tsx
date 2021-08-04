@@ -52,14 +52,19 @@ export default function Board({ boardData }: BoardProps) {
     return (
       <div className={boardStyles.column}>
         <h4>{c}</h4>
-        <div
-          className={boardStyles.content}
-          onDragOver={onDragOver}
-          onDrop={onDrop}
-          onDragEnter={onDragEnter}
-          onDragLeave={onDragLeave}
-        >
-          <Card />
+        {/* add media and move to class */}
+        <div style={{ height: "1000px" }}>
+          <div
+            className={boardStyles.content}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+            onDragEnter={onDragEnter}
+            onDragLeave={onDragLeave}
+          >
+            <Card />
+            <Card />
+            <Card />
+          </div>
         </div>
       </div>
     );
@@ -74,7 +79,7 @@ export default function Board({ boardData }: BoardProps) {
   return (
     <Provider store={store}>
       <div className={boardStyles.container}>
-        <div className="d-flex flex-row justify-content-between align-items-center mt-2">
+        <div className="d-flex flex-row justify-content-between align-items-center">
           <h2>Project Name</h2>
           <div className="d-flex flex-row justify-content-end align-items-center">
             <CardUsers size={1} />
@@ -142,13 +147,3 @@ export default function Board({ boardData }: BoardProps) {
     </Provider>
   );
 }
-
-// export const getStaticProps = async () => {
-//   const res = await fetch("");
-//   const boardData = res.json();
-//   return {
-//     props: {
-//       boardData,
-//     },
-//   };
-// };
