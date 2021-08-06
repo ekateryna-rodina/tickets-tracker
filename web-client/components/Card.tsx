@@ -5,21 +5,26 @@ import pic from "../assets/images/randomCard.jpg";
 import cardStyles from "../styles/Card.module.scss";
 import CardUsers from "./CardUsers";
 
-const Card = () => {
+interface ICardProps {
+  id: string;
+  title: string;
+  storyName: string;
+}
+const Card = (props: ICardProps) => {
+  const { id, title, storyName } = props;
+
   return (
-    <div className={cardStyles.container} draggable={true} id="draggableCard">
+    <div className={`${cardStyles.container}`}>
       <div
         className="d-flex flex-row justify-content-between align-items-center"
         style={{ width: "100%" }}
       >
-        <div className={cardStyles.storyName}>Story name</div>
+        <div className={cardStyles.storyName}>{storyName}</div>
         <div className={cardStyles.actions}>
-          <div className={cardStyles.id}>IK-4567</div>
-          {/* <i className="fas fa-ellipsis-h"></i> */}
+          <div className={cardStyles.id}>{id}</div>
         </div>
       </div>
-      {/* <div className={cardStyles.id}>IK-4567</div> */}
-      <div className={cardStyles.name}>Add user authentification</div>
+      <div className={cardStyles.name}>{title}</div>
       <div className={cardStyles.image}>
         <Image alt="" src={pic} layout="responsive" />
       </div>

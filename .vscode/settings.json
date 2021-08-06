@@ -1,3 +1,4 @@
 {
-  "jest.pathToJest": "server/node_modules/.bin/jest"
+  "jest.pathToJest": "server/node_modules/.bin/jest",
+  "liveServer.settings.port": 3001
 }
