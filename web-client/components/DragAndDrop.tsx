@@ -46,7 +46,7 @@ function DragAndDrop() {
     <div className={boardStyles.columns}>
       {statuses.map((s: string) => (
         <div className={boardStyles.column} key={s}>
-          <h4>{s}</h4>
+          <h6>{s}</h6>
           {/* add media and move to class */}
           <div style={{ height: "1000px" }}>
             <div className={boardStyles.content}>

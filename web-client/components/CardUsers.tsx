@@ -19,7 +19,7 @@ const CardUsers = (props: ICardUsersProps) => {
       <div
         key={key}
         className={cardUsersStyles.avatar}
-        style={{ height: size == 2 ? 30 : 50, width: size == 2 ? 30 : 50 }}
+        style={{ height: size == 2 ? 25 : 45, width: size == 2 ? 25 : 45 }}
       >
         <Image
           className="border border-white rounded-circle"

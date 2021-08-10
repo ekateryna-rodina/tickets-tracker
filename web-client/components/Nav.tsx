@@ -47,17 +47,17 @@ const Nav = (data) => {
             />
             <div>
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item btn btn-primary btn-sm mx-2">
+                <li className="nav-item rounded bg-primary mx-2">
                   <Link href="/">
                     <a className="nav-link" aria-current="page" href="#">
-                      <i className="fas fa-clipboard-list fa-2x"></i>
+                      <i className="fas fa-clipboard-list fa-lg"></i>
                     </a>
                   </Link>
                 </li>
-                <li className="nav-item btn btn-primary btn-sm">
+                <li className="nav-item rounded bg-primary">
                   <Link href="/">
                     <a className="nav-link" aria-current="page" href="#">
-                      <i className="far fa-grip-vertical fa-2x"></i>
+                      <i className="far fa-grip-vertical fa-lg"></i>
                     </a>
                   </Link>
                 </li>
@@ -66,10 +66,10 @@ const Nav = (data) => {
           </form>
           <div className="">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item btn btn-primary btn-sm">
+              <li className="nav-item rounded bg-primary">
                 <Link href="/">
                   <a className="nav-link" aria-current="page">
-                    <i className="far fa-bell fa-2x"></i>
+                    <i className="far fa-bell fa-lg"></i>
                   </a>
                 </Link>
               </li>
@@ -78,8 +78,8 @@ const Nav = (data) => {
                   <a>
                     <div style={{ display: "grid" }}>
                       <Img
-                        height={55}
-                        width={55}
+                        height={40}
+                        width={40}
                         className="rounded-circle"
                         src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNDk3Mzh8MHwxfHNlYXJjaHwxfHxhdmF0YXJ8ZW58MHx8fHwxNjI3NDM0NDU1&ixlib=rb-1.2.1&q=80&w=200"
                         alt=""

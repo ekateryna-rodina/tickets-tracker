@@ -18,7 +18,7 @@ const Board = ({ boardData }: BoardProps) => {
       <Provider store={store}>
         <div className={boardStyles.container}>
           <div className="d-flex flex-row justify-content-between align-items-center">
-            <h2>Project Name</h2>
+            <h4>Project Name</h4>
             <div className="d-flex flex-row justify-content-end align-items-center">
               <CardUsers size={1} />
               <Button variant="white" className="shadow rounded ms-2">
