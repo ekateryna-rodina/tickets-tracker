@@ -1,45 +1,28 @@
-const cardsByGroups = [
+import { TicketStatus } from "./utils/ticketStatusEnum";
+const cards: {
+  id: string;
+  title: string;
+  storyName: string;
+  status: TicketStatus;
+}[] = [
   {
-    title: "Backlog",
-    items: [
-      {
-        id: "TH-456",
-        title: "Add user authentification",
-        storyName: "Story 1",
-        group: "Backlog",
-      },
-      {
-        id: "TH-457",
-        title: "Add user authentification1",
-        storyName: "Story 1",
-        group: "Backlog",
-      },
-      {
-        id: "TH-458",
-        title: "Add user authentification2",
-        storyName: "Story 2",
-        group: "Backlog",
-      },
-    ],
+    id: "TH-456",
+    title: "Add user authentification",
+    storyName: "Story 1",
+    status: TicketStatus.InProgress,
   },
   {
-    title: "In progress",
-    items: [],
+    id: "TH-457",
+    title: "Add user authentification1",
+    storyName: "Story 1",
+    status: TicketStatus.InProgress,
   },
-  { title: "Code review", items: [] },
-  { title: "Testing", items: [] },
-  { title: "Deployment", items: [] },
-  { title: "Blocked", items: [] },
-  { title: "Done", items: [] },
-];
-const columnNames = [
-  "Backlog",
-  "In progress",
-  "Code review",
-  "Testing",
-  "Deployment",
-  "Blocked",
-  "Done",
+  {
+    id: "TH-458",
+    title: "Add user authentification2",
+    storyName: "Story 2",
+    status: TicketStatus.Backlog,
+  },
 ];
 
 const multiselectOptions = [
@@ -51,4 +34,4 @@ const multiselectOptions = [
   { value: "blocked", label: "Blocked" },
   { value: "done", label: "Done" },
 ];
-export { cardsByGroups, columnNames, multiselectOptions };
+export { cards, multiselectOptions };

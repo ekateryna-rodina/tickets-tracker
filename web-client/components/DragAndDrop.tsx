@@ -1,24 +1,75 @@
 import React, { useState } from "react";
-import { cardsByGroups } from "../data";
+import { cards as data } from "../data";
 import boardStyles from "../styles/Board.module.scss";
-import Card from "./Card";
+import { TicketStatus } from "../utils/ticketStatusEnum";
+import Draggable from "./Draggable";
+import DragOverZone from "./DragOverZone";
+import DropWrapper from "./DropWrapper";
+interface CardData {
+  id: string;
+  title: string;
+  storyName: string;
+  status: string;
+}
+
+const statuses = [
+  "Backlog",
+  "In Progress",
+  "Code Review",
+  "Testing",
+  "Deployment",
+  "Blocked",
+  "Done",
+];
 
 function DragAndDrop() {
-  const [groupsWithCards, setGroupsWithCards] = useState(cardsByGroups);
-
+  const [cards, setCards] = useState<CardData[]>(data);
+  const onDrop = (item: CardData, monitor: any, status: string) => {
+    setCards((oldList: CardData[]) => {
+      const filtered = oldList.filter((c) => c.id != item.id);
+      var statusVal: TicketStatus =
+        TicketStatus[status as keyof typeof TicketStatus];
+      let cardWithStatusUpdated = { ...item, status: statusVal };
+      return [...filtered, cardWithStatusUpdated];
+    });
+  };
+  const moveItem = (dragIndex: number, hoverIndex: number) => {
+    const item = cards[dragIndex];
+    setCards((oldList: CardData[]) => {
+      const newItems = oldList.filter((i, idx) => idx !== dragIndex);
+      newItems.splice(hoverIndex, 0, item);
+      return [...newItems];
+    });
+  };
+  console.log(cards);
   return (
     <div className={boardStyles.columns}>
-      {groupsWithCards.map((c, ci) => (
-        <div className={boardStyles.column} key={c.title}>
-          <h4>{c.title}</h4>
+      {statuses.map((s: string) => (
+        <div className={boardStyles.column} key={s}>
+          <h4>{s}</h4>
           {/* add media and move to class */}
           <div style={{ height: "1000px" }}>
             <div className={boardStyles.content}>
-              {c.items.map((card, i) => (
-                <div key={card.id}>
-                  <Card {...{ ...card }} />
-                </div>
-              ))}
+              <DropWrapper onDrop={onDrop} status={s}>
+                <DragOverZone isOver={false}>
+                  {cards
+                    .filter((c) => {
+                      return c.status === s;
+                    })
+                    .map((card, i) => (
+                      <Draggable
+                        key={card.id}
+                        card={cards}
+                        moveItem={moveItem}
+                        status={card.status}
+                        index={i}
+                      >
+                        <div></div>
+                        {/* <Card {...{ ...cards[card] }} /> */}
+                      </Draggable>
+                    ))}
+                </DragOverZone>
+              </DropWrapper>
             </div>
           </div>
         </div>
